@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wake County Property Tax Change Insights</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="branding">
+            <a href="https://terry4apex.com" target="_blank">
+                <img src="green_straight (2).png" alt="Terry Mahaffey Logo" class="logo">
+            </a>
+            <h1>Wake County Property Tax Change Insights</h1>
+        </header>
+
+        <section class="introduction">
+            <h2>Understanding Your Property Tax Changes</h2>
+            <p>Wake County recently went through a property revaluation process. This process, required by law, must rebalance the existing property tax burden based on the updated property values. It did not generate additional revenue in aggregate, and is often referred to as revenue neutral as some properties bills got higher and others lower. However, as residential real estate has gone up in value more than commercial, this revaluation process in of itself resulted in many (but not all) homeowners seeing an increase in their property tax bill.</p>
+            <p>Separately, new annual budgets were passed by the county and all municipalities - which include adjustments to tax rates. These changes can have varying impacts on your property tax bill depending on the specifics of your property and the town you live in.</p>
+            <p>Use this tool to understand how these changes affect your property tax bill. Simply enter your previous and new property valuations, select your town, and we’ll break down the impact for you.</p>
+        </section>
+        
+        <form id="taxForm">
+            <label for="prevValuation">Previous Valuation:
+                <span class="info-icon" title="Look up your previous valuation at the Wake County Tax Portal.">
+                    <a href="https://services.wake.gov/TaxPortal/Property/SearchByAddress" target="_blank">?</a>
+                </span>
+            </label>
+            <input type="text" id="prevValuation" name="prevValuation" required value="813302">
+
+            <label for="newValuation">New Valuation:
+                <span class="info-icon" title="Look up your new valuation at the Wake County Tax Portal.">
+                    <a href="https://services.wake.gov/TaxPortal/Property/SearchByAddress" target="_blank">?</a>
+                </span>
+            </label>
+            <input type="text" id="newValuation" name="newValuation" required value="1240721">
+
+            <label for="town">Town:</label>
+            <select id="town" name="town" required>
+                <option value="Apex" selected>Apex</option>
+                <option value="Cary">Cary</option>
+                <option value="Fuquay Varina">Fuquay Varina</option>
+                <option value="Garner">Garner</option>
+                <option value="Holly Springs">Holly Springs</option>
+                <option value="Knightdale">Knightdale</option>
+                <option value="Morrisville">Morrisville</option>
+                <option value="Raleigh">Raleigh</option>
+                <option value="Rolesville">Rolesville</option>
+                <option value="Wake Forest">Wake Forest</option>
+                <option value="Wendell">Wendell</option>
+                <option value="Zebulon">Zebulon</option>
+                <option value="Unincorporated Wake County">Unincorporated Wake County</option>
+            </select>
+
+            <button type="submit">Calculate</button>
+        </form>
+
+        <div class="results" id="results" style="display:none;">
+            <h2>Results</h2>
+            <div class="summary-box">
+                <p id="newTaxBill" class="summary-total"></p>
+            </div>
+            <canvas id="taxChart" width="400" height="200"></canvas>  <!-- Canvas for the chart -->
+            <div class="summary-box">
+                <p class="summary-total">Breakdown of your property tax bill</p>
+            </div>
+            <div class="result-section">
+                <h3>Old Tax Bill: <span id="oldTaxBill"></span></h3>
+            </div>
+            <div class="result-section">
+                <h3 onclick="toggleExplanation('revaluationChange')">
+                    <span class="icon" id="revaluationChangeIcon">▼</span> Revaluation Change:
+                    <span id="revaluationChange"></span>
+                </h3>
+                <p id="revaluationChangeExplanation" class="explanation"></p>
+            </div>
+            <div class="result-section">
+                <h3 onclick="toggleExplanation('countyTaxChange')">
+                    <span class="icon" id="countyTaxChangeIcon">▼</span> County Tax Change:
+                    <span id="countyTaxChange"></span>
+                </h3>
+                <p id="countyTaxChangeExplanation" class="explanation"></p>
+            </div>
+            <div id="townTaxChangeContainer" class="result-section">
+                <h3 onclick="toggleExplanation('townTaxChange')">
+                    <span class="icon" id="townTaxChangeIcon">▼</span> Town Tax Change:
+                    <span id="townTaxChange"></span>
+                </h3>
+                <p id="townTaxChangeExplanation" class="explanation"></p>
+            </div>
+            <canvas id="taxCompositionChart" width="400" height="200"></canvas>  <!-- Canvas for the pie chart -->
+        </div>
+
+        <footer>
+            <p class="footer-text">Brought to you as a public service by <a href="mailto:terry.mahaffey@gmail.com">Terry Mahaffey</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
