@@ -90,7 +90,7 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
     const town = document.getElementById('town').value;
 
     const townTaxRate = townTaxRates[town];
-    const rateChange = (townTaxRates[town].newRate - townTaxRates[town].revenueNeutralRate).toFixed(2);
+    const rateChange = (townTaxRates[town].newRate - townTaxRates[town].revenueNeutralRate).toFixed(4);
 
     // Calculate the old tax bill
     const oldCountyTax = ((prevValuation / 100) * wakeCountyTaxRate.oldRate) + 20;
@@ -148,7 +148,7 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
         townContext += ` ${town}'s tax increase was about average compared to other towns in the county at ${rateChange} per $100 accessed value.`;
     }
 
-    townContext += ` ${town} currently has ${classifyTaxRate(town)} compared to the rest of the county.`;
+    townContext += ` ${town} currently has ${classifyTaxRate(town)} in Wake county.`;
 
     // Set the explanations with context
     document.getElementById('revaluationChangeExplanation').innerText = revaluationContext;
