@@ -1,3 +1,8 @@
+function cleanInput(input) {
+    // This regex replaces anything that is not a digit or period with an empty string
+    return input.replace(/[^0-9.]/g, '');
+}
+
 document.getElementById('taxForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -42,6 +47,11 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
         if (highestIncreases.some(t => t.town === town)) return 'highest';
         return 'average';
     };
+    // Clean input
+    var prevValuationField = document.getElementById('prevValuation');
+    prevValuationField.value = cleanInput(prevValuationField.value);
+    var newValuationField = document.getElementById('newValuation');
+    newValuationField.value = cleanInput(newValuationField.value);
 
     // Retrieve the input values
     const prevValuation = parseFloat(document.getElementById('prevValuation').value);
@@ -124,7 +134,14 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
         document.getElementById('townTaxChangeExplanation').innerHTML += `<p>For more details, you can review ${town}'s budget <a href="${townTaxRate.budgetLink}" target="_blank">here</a>.</p>`;
     }
 
+    let chartStatus = Chart.getChart('taxChart');
+    if (chartStatus != undefined)
+        chartStatus.destroy();
+    let chartStatusPie = Chart.getChart('taxCompositionChart');
+    if (chartStatusPie != undefined)
+        chartStatusPie.destroy();
     // Rendering the chart
+
     const ctx = document.getElementById('taxChart').getContext('2d');
     const taxChart = new Chart(ctx, {
         type: 'bar',
