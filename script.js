@@ -131,15 +131,15 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
     }
 
     // Contextual explanations with budget links
-    let revaluationContext = `This is the portion of your new tax bill which is attributable solely to the change in your property's value. Your property ${revaluationChange > 0 ? 'went up in value more than average, resulting in an increase' : 'went up in value less than average, resulting in a decrease'} to your tax bill.\n\n`;
-    revaluationContext += `It's important to understand that this change in of itself didn't result in any additional revenue for the county or town, but rather a redistribution of the tax burden based on the change in property values. Some went up, some went down.\n\n`;
+    let revaluationContext = `This is the portion of your new tax bill which is attributable solely to the change in your property's value. Your property ${revaluationChange > 0 ? 'went up in value more than average, resulting in an increase' : 'went up in value less than average, resulting in a decrease'} to your tax bill. This changed your tax bill by ${((revaluationChange / oldTaxBill) * 100).toFixed(2)}%\n\n`;
+    revaluationContext += `It's important to understand that this change in of itself didn't result in any additional revenue for the county or town, but rather a redistribution of the tax burden across all property based on the updated property values. Some went up, some went down.\n\n`;
     revaluationContext += `This was not the result of any policy decision, but rather the result of a state mandated property revaluation process.\n\n`
     // revaluationContext += `For more information, see the County's FAQ on the topic at <a href="https://www.wakegov.com/departments-government/tax-administration/property-tax/revaluation" target="_blank">Wake County Revaluation FAQ</a>.`;
 
-    let countyContext = `The County Commissioners in June 2024 passed a new budget which increased the tax rate by approximately 5 cents on top of the revenue neutral rate. The county tax change accounts for ${((countyTaxChange / totalChange) * 100).toFixed(2)}% of the change in your tax bill.`;
+    let countyContext = `The County Commissioners in June 2024 passed a new budget which increased the tax rate by approximately 5 cents on top of the revenue neutral rate. The county tax change in of itself raised your tax bill by ${((countyTaxChange / oldTaxBill) * 100).toFixed(2)}%.`;
 
     const townCategory = getTownCategory(town);
-    let townContext = `${town} passed a new budget in June 2024 which raised your tax bill by $${townTaxChange.toFixed(2)}, accounting for ${((townTaxChange / totalChange) * 100).toFixed(2)}% of the total change from last year.`;
+    let townContext = `${town} passed a new budget in June 2024 which raised your tax bill by $${townTaxChange.toFixed(2)}, or ${((townTaxChange / oldTaxBill) * 100).toFixed(2)}%.`;
     
     if (townCategory === 'lowest') {
         townContext += ` ${town} had one of the lowest tax increases in the county at ${rateChange} per $100 accessed value.`;
@@ -162,10 +162,10 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
 
     // Add budget links if available
     if (wakeCountyTaxRate.budgetLink) {
-        document.getElementById('countyTaxChangeExplanation').innerHTML += `<p>For more details, you can review the county's budget <a href="${wakeCountyTaxRate.budgetLink}" target="_blank">here</a>.</p>`;
+        document.getElementById('countyTaxChangeExplanation').innerHTML += `<p>For more details please review the county's budget <a href="${wakeCountyTaxRate.budgetLink}" target="_blank">here</a>.</p>`;
     }
     if (town !== "Unincorporated Wake County" && townTaxRate.budgetLink) {
-        document.getElementById('townTaxChangeExplanation').innerHTML += `<p>For more details, you can review ${town}'s budget <a href="${townTaxRate.budgetLink}" target="_blank">here</a>.</p>`;
+        document.getElementById('townTaxChangeExplanation').innerHTML += `<p>You can review the tax rates of all towns currently and going back to 2015 <a href="https://s3.us-west-1.amazonaws.com/wakegov.com.if-us-west-1/s3fs-public/documents/2024-06/TaxRates2024.pdf">here</a><p>For more details please review ${town}'s budget <a href="${townTaxRate.budgetLink}" target="_blank">here</a>.</p>`;
     }
 
     let chartStatus = Chart.getChart('taxChart');
