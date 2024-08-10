@@ -132,8 +132,9 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
 
     // Contextual explanations with budget links
     let revaluationContext = `This is the portion of your new tax bill which is attributable solely to the change in your property's value. Your property ${revaluationChange > 0 ? 'went up in value more than average, resulting in an increase' : 'went up in value less than average, resulting in a decrease'} to your tax bill.\n\n`;
-    revaluationContext += `It's important to understand that this change in of itself didn't result in any additional revenue for the county or town, but rather a redistribution of the tax burden based on the change in property values.\n\n`;
+    revaluationContext += `It's important to understand that this change in of itself didn't result in any additional revenue for the county or town, but rather a redistribution of the tax burden based on the change in property values. Some went up, some went down.\n\n`;
     revaluationContext += `This was not the result of any policy decision, but rather the result of a state mandated property revaluation process.\n\n`
+    // revaluationContext += `For more information, see the County's FAQ on the topic at <a href="https://www.wakegov.com/departments-government/tax-administration/property-tax/revaluation" target="_blank">Wake County Revaluation FAQ</a>.`;
 
     let countyContext = `The County Commissioners in June 2024 passed a new budget which increased the tax rate by approximately 5 cents on top of the revenue neutral rate. The county tax change accounts for ${((countyTaxChange / totalChange) * 100).toFixed(2)}% of the change in your tax bill.`;
 
@@ -152,7 +153,7 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
 
     // Set the explanations with context
     document.getElementById('revaluationChangeExplanation').innerText = revaluationContext;
-    document.getElementById('revaluationChangeExplanation').innerHTML = revaluationContext;
+    document.getElementById('revaluationChangeExplanation').innerHTML += `For more information, see the County's FAQ on the topic at <a href="https://www.wakegov.com/departments-government/tax-administration/property-tax/revaluation" target="_blank">Wake County Revaluation FAQ</a>.`;
     document.getElementById('countyTaxChangeExplanation').innerText = countyContext;
     
     if (town !== "Unincorporated Wake County") {
