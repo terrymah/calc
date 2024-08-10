@@ -14,7 +14,7 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
     };
 
     const townTaxRates = {
-        "Unincorporated Wake County": { oldRate: 0, newRate: 0, revenueNeutralRate: 0, budgetLink: "" },
+        "Unincorporated Wake County": { oldRate: 0.6570, newRate: 0.5135, revenueNeutralRate: 0.4633, budgetLink: "" },
         "Apex": { oldRate: 0.44, newRate: 0.34, revenueNeutralRate: 0.302, budgetLink: "https://apexnc.org/153/Budget" },
         "Cary": { oldRate: 0.345, newRate: 0.325, revenueNeutralRate: 0.244, budgetLink: "https://www.carync.gov/services-publications/plans-publications-reports/budget" },
         "Fuquay Varina": { oldRate: 0.455, newRate: 0.358, revenueNeutralRate: 0.318, budgetLink: "https://www.fuquay-varina.org/200/Budget-Information" },
@@ -47,6 +47,37 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
         if (highestIncreases.some(t => t.town === town)) return 'highest';
         return 'average';
     };
+
+    function classifyTaxRate(town) {
+        const rates = Object.values(townTaxRates).map(info => info.newRate);
+        const averageRate = rates.reduce((acc, curr) => acc + curr, 0) / rates.length;
+        const sortedRates = [...rates].sort((a, b) => a - b);
+        const lowest = sortedRates[0];
+        const highest = sortedRates[sortedRates.length - 1];
+        
+        // Determine thresholds for "one of the lowest" and "one of the highest"
+        const lowerThreshold = sortedRates[Math.floor(sortedRates.length / 3)];
+        const upperThreshold = sortedRates[Math.ceil(2 * sortedRates.length / 3)];
+        
+        const townRate = townTaxRates[town].newRate;
+    
+        if (townRate === lowest) {
+            return "the lowest tax rate";
+        } else if (townRate === highest) {
+            return "the highest tax rate";
+        } else if (townRate <= lowerThreshold) {
+            return "one of the lowest tax rates";
+        } else if (townRate >= upperThreshold) {
+            return "one of the highest tax rates";
+        } else {
+            return "an average tax rate";
+        }
+    }
+    
+    // Example Usage
+    console.log(classifyTaxRate("Raleigh"));  // Output classification based on Raleigh's tax rate
+    
+    
     // Clean input
     var prevValuationField = document.getElementById('prevValuation');
     prevValuationField.value = cleanInput(prevValuationField.value);
@@ -116,6 +147,8 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
     } else {
         townContext += ` ${town}'s tax increase was about average compared to other towns in the county at ${rateChange} per $100 accessed value.`;
     }
+
+    townContext += ` ${town} currently has ${classifyTaxRate(town)} compared to the rest of the county.`;
 
     // Set the explanations with context
     document.getElementById('revaluationChangeExplanation').innerText = revaluationContext;
