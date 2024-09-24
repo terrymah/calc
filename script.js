@@ -6,6 +6,15 @@ function cleanInput(input) {
 document.getElementById('taxForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
+        // Send the event to Google Analytics with gtag
+    gtag('event', 'calculate', {
+        'event_category': 'Form',
+        'event_label': 'Tax Calculation',
+        'prev_valuation': prevValuation,
+        'new_valuation': newValuation,
+        'town': town
+    });
+    
     const wakeCountyTaxRate = {
         oldRate: 0.6570,
         newRate: 0.5135,
@@ -73,10 +82,6 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
             return "an average tax rate";
         }
     }
-    
-    // Example Usage
-    console.log(classifyTaxRate("Raleigh"));  // Output classification based on Raleigh's tax rate
-    
     
     // Clean input
     var prevValuationField = document.getElementById('prevValuation');
@@ -237,6 +242,16 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
             plugins: {
                 legend: {
                     position: 'top',
+                },
+                dataLabels: {
+                    display: true,
+                    color: '#fff',
+                    allowOverlap: true,
+                    formatter: (value, ctx) => {
+                        let sum = ctx.dataset._meta[0].total;
+                        let percentage = (value * 100 / sum).toFixed(2) + "%";
+                        return percentage;
+                    }
                 }
             },
             onClick: function(evt, element) {
