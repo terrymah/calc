@@ -5,15 +5,6 @@ function cleanInput(input) {
 
 document.getElementById('taxForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
-        // Send the event to Google Analytics with gtag
-    gtag('event', 'calculate', {
-        'event_category': 'Form',
-        'event_label': 'Tax Calculation',
-        'prev_valuation': prevValuation,
-        'new_valuation': newValuation,
-        'town': town
-    });
     
     const wakeCountyTaxRate = {
         oldRate: 0.6570,
@@ -94,6 +85,15 @@ document.getElementById('taxForm').addEventListener('submit', function(e) {
     const newValuation = parseFloat(document.getElementById('newValuation').value);
     const town = document.getElementById('town').value;
 
+        // Send the event to Google Analytics with gtag
+        gtag('event', 'calculate', {
+            'event_category': 'Form',
+            'event_label': 'Tax Calculation',
+            'prev_valuation': prevValuation,
+            'new_valuation': newValuation,
+            'town': town
+        });
+            
     const townTaxRate = townTaxRates[town];
     const rateChange = (townTaxRates[town].newRate - townTaxRates[town].revenueNeutralRate).toFixed(4);
 
